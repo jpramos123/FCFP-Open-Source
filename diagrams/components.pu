@@ -1,0 +1,25 @@
+@startuml Components Diagram
+
+left to right direction
+skinparam monochrome true
+
+database MongoDB
+
+node Backend {
+  [Auth Service] as auth <<Node>>
+  [CRUD Service] as crud <<Java>>
+  [Report Service] as report
+}
+
+node Frontend {
+  [Frontend Server] as front
+}
+
+front <--> crud
+front <--> report
+crud <--> MongoDB
+auth <--> front
+auth <--> MongoDB
+report <--> MongoDB
+
+@enduml
