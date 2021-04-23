@@ -1,0 +1,52 @@
+@startuml
+skinparam monochrome true
+left to right direction
+
+class User{
+    String name
+    Pocket pocket
+    Expense[] expenses
+    createExpense()
+    readExpense()
+    updateExpense()
+    deleteExpenese()
+    insertMoneyInPocket()
+    deleteMoneyInPocket()
+
+}
+
+class Expense {
+    String name
+    String expenseClass
+    Float amount
+    ExpenseCategory expenseCategory
+}
+class Pocket{
+    Float balance
+}
+
+
+class ExpenseCategory{
+    String categoryName
+}
+
+class MonthlyInstallments{
+    Datetime startDate
+    Datetime endDate
+}
+class SporadicExpense{
+    Datetime date
+}
+
+class EssentialExpense{
+    
+}
+
+Expense <|-- EssentialExpense
+Expense <|-- SporadicExpense
+Expense <|-- MonthlyInstallments
+Expense *-- Category
+User o-- Expense
+User o-- Pocket
+
+@enduml

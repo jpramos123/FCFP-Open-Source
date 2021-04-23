@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+left to right direction
+
+actor User as user
+
+package "Financial Tool V1.0" {
+    usecase "Sign up into the system" as sup
+    usecase "Sign in into the system" as sin
+    usecase "Sporadic Expense" as se
+    usecase "Essential Expense" as ee
+    usecase "Credit Card Details" as ccd
+    usecase "Pocket" as pkt
+    usecase "Expense Category" as cat
+}
+
+user --> pkt: view balance
+user --> pkt: insert money
+user --> pkt: remove money
+user --> cat : CRUD
+user --> se : CRUD 
+user --> ee : CRUD
+user --> ccd : CRUD
+user --> sup
+user --> sin
+
+
+@enduml
