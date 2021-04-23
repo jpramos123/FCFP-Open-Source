@@ -15,11 +15,21 @@ node Frontend {
   [Frontend Server] as front
 }
 
-front <--> crud
-front <--> report
-crud <--> MongoDB
-auth <--> front
-auth <--> MongoDB
-report <--> MongoDB
+node "API Gateway" as gateway {
+  [Nginx]
+}
+
+database Redis
+
+front <--> Nginx
+Nginx <--> crud
+Nginx <--> report
+Nginx <--> auth
+
+crud <--> Redis
+auth <--> Redis
+report <--> Redis
+
+Redis <--> MongoDB
 
 @enduml
