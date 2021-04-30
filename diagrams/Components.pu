@@ -15,16 +15,16 @@ node Frontend {
   [Frontend Server] as front
 }
 
-node "API Gateway" as gateway {
-  [Nginx]
+node "API Gateway" {
+  [AWS API\n Gateway] as gateway
 }
 
 database Redis
 
-front <--> Nginx
-Nginx <--> crud
-Nginx <--> report
-Nginx <--> auth
+front <--> gateway
+gateway <--> crud
+gateway <--> report
+gateway <--> auth
 
 crud <--> Redis
 auth <--> Redis
