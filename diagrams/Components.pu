@@ -3,12 +3,23 @@
 left to right direction
 skinparam monochrome true
 
-database MongoDB
-
 node Backend {
   [Auth Service] as auth <<Node>>
   [CRUD Service] as crud <<Java>>
   [Report Service] as report
+}
+  database Users as usersdb <<MongoDB>>
+  database Finances as financesdb <<MongoDB>>
+  database Reports as reportsdb <<MongoDB>>
+
+  database Users as usersRedis <<Redis>>
+  database Finances as financesRedis <<Redis>>
+  database Reports as reportsRedis <<Redis>>
+
+node Kafka {
+  queue "created-finance-record" as createdTopic
+  queue "updated-finance-record" as updatedTopic
+  queue "deleted-finance-record" as deletedTopic
 }
 
 node Frontend {
@@ -19,17 +30,30 @@ node "API Gateway" {
   [AWS API\n Gateway] as gateway
 }
 
-database Redis
-
 front <--> gateway
 gateway <--> crud
 gateway <--> report
 gateway <--> auth
 
-crud <--> Redis
-auth <--> Redis
-report <--> Redis
+crud <-d-> financesRedis
+financesRedis <-d-> financesdb
 
-Redis <--> MongoDB
+auth <-u-> usersRedis
+usersRedis <--> usersdb
+
+report <--> reportsRedis
+reportsRedis <--> reportsdb
+
+crud .r.> producer
+
+producer ...> createdTopic
+producer ...> updatedTopic
+producer ...> deletedTopic
+
+createdTopic ..> consumer
+updatedTopic ..> consumer
+deletedTopic ..> consumer
+
+consumer ..> report
 
 @enduml
